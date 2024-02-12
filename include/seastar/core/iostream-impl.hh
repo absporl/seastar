@@ -163,7 +163,7 @@ input_stream<CharType>::read_exactly_part(size_t n, tmp_buf out, size_t complete
         }
 
         if (completed == n) {
-            co_return out;
+            break;
         }
 
         // _buf is now empty
@@ -171,10 +171,11 @@ input_stream<CharType>::read_exactly_part(size_t n, tmp_buf out, size_t complete
         if (buf.size() == 0) {
             _eof = true;
             out.trim(completed);
-            co_return out;
+            break;
         }
         _buf = std::move(buf);
     }
+    co_return out;
 }
 
 template <typename CharType>
